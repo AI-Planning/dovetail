@@ -16,14 +16,14 @@ function ShowDovetail() {
                 window.toastr.success('Dovetail complete!');
             else
                 window.toastr.error('Problem with the server.');
-            updateHTML(res.svg);
+            updateDovetailHTML(res.svg);
         })
         .fail(function (res) {
             window.toastr.error('Error: Malformed URL?');
         });
 }
 
-function updateHTML(output) {
+function updateDovetailHTML(output) {
     var tab_name = 'Dovetail (' + (Object.keys(window.dovetails).length + 1) + ')';
     window.new_tab(tab_name, function(editor_name) {
         window.dovetails[editor_name] = output;
