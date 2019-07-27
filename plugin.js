@@ -27,12 +27,8 @@ function updateDovetailHTML(output) {
     var tab_name = 'Dovetail (' + (Object.keys(window.dovetails).length + 1) + ')';
     window.new_tab(tab_name, function(editor_name) {
         window.dovetails[editor_name] = output;
-        var plan_html = '<div class="plan-display">\n';
-        plan_html += '<h2>Dovetail</h2>\n';
-        plan_html += '<div class="well plan-list" style="background-color:white;font-family:\'Helvetica Neue\',Helvetica,Arial,sans-serif">\n';
-        plan_html += output;
-        plan_html += '</div>';
-        $('#' + editor_name).html(plan_html);
+        $('#' + editor_name).html('<div class="plan-display"><h2>Dovetail</h2>' +
+        '<div class="well plan-list" style="background-color:white;font-family:\'Helvetica Neue\',Helvetica,Arial,sans-serif">' + output + '</div>');
     });
 }
 
