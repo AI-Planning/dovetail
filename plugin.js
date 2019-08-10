@@ -7,20 +7,21 @@ function ShowDovetail() {
     $('#plannerURLInput').show();
     window.toastr.info('Generating Dovetail...');
 
-    $.ajax({type: 'POST',
-            url: 'https://web-planner.herokuapp.com/dovetail',
-            data: {domain: domText, problem: probText}
-        })
-        .done(function (res) {
-            if(res.svg)
+    $.ajax({
+        type: 'POST',
+        url: 'https://web-planner.herokuapp.com/dovetail',
+        data: {domain: domText, problem: probText},
+        success: function(res) {
+            if(res.svg) {
                 window.toastr.success('Dovetail complete!');
-            else
+                updateDovetailHTML(res.svg);
+            } else {
                 window.toastr.error('Problem with the server.');
-            updateDovetailHTML(res.svg);
-        })
-        .fail(function (res) {
-            window.toastr.error('Error: Malformed URL?');
-        });
+                console.log(res.error);
+            }
+        },
+        error: function(res) { window.toastr.error('Error: Malformed URL?'); }
+    });
 }
 
 function updateDovetailHTML(output) {
@@ -32,7 +33,7 @@ function updateDovetailHTML(output) {
     });
 }
 
-define(function () {
+define(function() {
     // Store dovetails
     window.dovetails = {};
 
