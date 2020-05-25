@@ -2,6 +2,7 @@
 function ShowDovetail() {
     var domText = window.ace.edit($('#domainSelection').find(':selected').val()).getSession().getValue();
     var probText = window.ace.edit($('#problemSelection').find(':selected').val()).getSession().getValue();
+    var heuristic = document.getElementsByName('heuristic')[0].checked ? '' : 'hamming';
 
     $('#chooseFilesModal').modal('toggle');
     $('#plannerURLInput').show();
@@ -10,7 +11,7 @@ function ShowDovetail() {
     $.ajax({
         type: 'POST',
         url: 'https://web-planner.herokuapp.com/dovetail',
-        data: {domain: domText, problem: probText},
+        data: {domain: domText, problem: probText, heuristic: heuristic},
         success: function(res) {
             if(res.svg) {
                 window.toastr.success('Dovetail complete!');
@@ -20,7 +21,7 @@ function ShowDovetail() {
                 console.log(res.error);
             }
         },
-        error: function(res) { window.toastr.error('Error: Malformed URL?'); }
+        error: function(res) { window.toastr.error('Error: Malformed URL or server limit reached'); }
     });
 }
 
@@ -54,6 +55,10 @@ define(function() {
                 showChoice: function() {
                     window.setup_file_chooser('Dovetail', 'Generate Dovetail');
                     $('#plannerURLInput').hide();
+                    document.getElementById('chooseFilesExtraSpace').innerHTML = '<hr><form>' +
+                    '<label class="col-sm-2 control-label">Search:</label>' +
+                    '<label class="radio-inline"><input type="radio" name="heuristic" checked>Blind search (optimal)</label>' +
+                    '<label class="radio-inline"><input type="radio" name="heuristic">Heuristic search (fast)</label></form>';
                 },
                 selectChoice: ShowDovetail
             });
